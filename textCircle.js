@@ -1,6 +1,15 @@
 this.Documents = new Mongo.Collection("documents");
 EditingUsers = new Mongo.Collection("editingUsers");
 
+function fixObjectKeys(obj){
+  var newObj = {};
+  for (key in obj){
+    var key2 = key.replace("-", "");
+    newObj[key2] = obj[key];
+  }
+  return newObj;
+};
+
 if (Meteor.isClient) {
 
   Template.editor.helpers({
@@ -17,6 +26,7 @@ if (Meteor.isClient) {
       return function(editor){
         editor.setOption("lineNumbers", true);
         editor.setOption("mode", "html");
+        editor.setOption("theme", "pastel-on-dark");
         editor.on("change", function(cm_editor, info){
           $("#viewer_iframe").contents().find("html").html(cm_editor.getValue());
           Meteor.call("addEditingUser");
@@ -35,7 +45,7 @@ if (Meteor.isClient) {
       users = new Array();
       var i = 0;
       for(var user_id in eusers.users){
-        users[i] = fixObjectKeys(eusers.users[]);
+        users[i] = fixObjectKeys(eusers.users[user_id]);
         i++;
       }
       return users;
@@ -72,13 +82,4 @@ if (Meteor.isServer) {
       EditingUsers.upsert({_id:eusers._id}, eusers);
     }
   });
-
-  function fixObjectKeys(obj){
-    var newObj = {};
-    for (key in obj){
-      var key2 = key.replace("-", "");
-      newObj[key2] = obj[key];
-    }
-    return newObj;
-  };
 }
