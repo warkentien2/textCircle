@@ -6,9 +6,15 @@
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">TextCircle</a>
+      <p class="navbar-text navbar-right">{{> loginButtons align="right"}}</p>
     </div> <!-- end navbar -->
   </nav>
   <div class="container top-margin">
+    <div class="row">
+      <div class="col-md-12">
+        {{> editingUsers}}
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-6">
         {{> editor}}
@@ -26,6 +32,11 @@
 
 <template name="viewer">
   <iframe id="viewer_iframe">
-
   </iframe>
+</template>
+
+<template name="editingUsers">
+  {{#each users}}
+    {{firstname}}
+  {{/each}}
 </template>
